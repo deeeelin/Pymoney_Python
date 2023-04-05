@@ -226,7 +226,7 @@ class pymoney:
 
         return 
     
-    def save(self)->None:
+    def save(self)->bool:
 
         """save values"""
 
@@ -240,11 +240,31 @@ class pymoney:
                     w.writelines(to_save)
                 w.close()
 
-        except : check_error("Unknown error")
-        
+        except : 
+            check_error("Unknown error")
+
+            while (1):
+                inp=input("Data unsaved, continue exit program ? (Y/N) ")
+
+                if inp == 'Y':
+                    
+                    sys.stderr.write("Data lost\n")
+
+                    return True
+                
+                elif inp == 'N':
+
+                    sys.stderr.write("Exit canceled, please fix error contents in 'records.txt'.\n")
+    
+                    return False
+                
+                
+                else:
+                    sys.stderr.write("Invalid option, try again\n")
+
         print("Data saved !")
         
-        return 
+        return True
     
     def load(self)->bool:
 
@@ -321,8 +341,9 @@ class pymoney:
 
             cmd = input("What do you want to do (add / view / delete / exit)?")
 
-            if cmd == "exit": break
-
+            if cmd == "exit": 
+                if self.save() : break
+                
             elif cmd == "add":
                 self.add_record()
 
@@ -334,7 +355,7 @@ class pymoney:
             else:
                 sys.stderr.write("Invalid command ! Try again.\n")
 
-        self.save()
+        
        
         print("Program terminated") 
 
