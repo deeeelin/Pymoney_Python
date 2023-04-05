@@ -88,7 +88,7 @@ def add(self_money,self_records)->Tuple[int,list]:
 
         except ValueError:
         
-            check_error(record_str,"Invalid value for money.")
+            check_error(record_str,"Invalid value for money. Try again !")
 
         except:
 
@@ -300,18 +300,34 @@ def load()->bool:
 
         return False,self_money,self_records
     
-    except ValueError:
+    except (ValueError,IndexError):
 
-        print('Content invalid, deleting all contents')
+        while (1):
+                inp=input("Previous data content invalid, delete previous data ? (Y/N) ")
 
-        try:
-            os.remove('records.txt')
-        except:
-            print('Error occured on deleting process.')
+                if inp == 'Y':
+                    try:
+                        os.remove('records.txt')
 
-        return False,self_money,self_records
+                        print('Previous data deleted')
+                        
+                    except:
+                        print('Error occured on deleting process.')
+
+                    return False,self_money,self_records
+                 
+                
+                elif inp == 'N':
+
+                    sys.stderr.write("Program terminated, please fix error contents in 'records.txt'.\n")
+    
+                    exit(0)
+                
+                else:
+                    sys.stderr.write("Invalid option, try again\n")
             
     except : 
+
         check_error('Unknown error')
 
         return False,self_money,self_records
