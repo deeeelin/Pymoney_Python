@@ -23,231 +23,227 @@ def check_error(string:str = '',error_message:str= '')->None: #check exceptions
 
     return 
         
-class pymoney:
-
-    def __init__(self)->None:
-        """constructor"""
-        self.money=0
-        self.records=[]
-
-    def input_money(self)->None:
-        """Input the amount of money"""
-        
-        while 1: # money input
-            
-            money_str = input("How much money do you have ?")
-
-            try: #data process
-
-                if money_str == "cancel" : # cancel function
-                    print("Canceled option, set to 0 by default")
-                    return 
-
-                self.money = int(money_str) 
-                break 
-
-            except ValueError: # error detect
-
-                check_error(money_str,"Invalid value for money. Try again!")
-            
-            except : check_error("Unknown error")
-            
-        return 
-
-    def add_record(self)->None:
-        """Add income or expense record"""
-        
-        while 1:  #record input
-            
-            record_str  = input("Add an expense or income record with description and amount:\n")
-            
-            try:  #data process
-                if record_str == "cancel" : # cancel function
-
-                    print("Canceled option")
-
-                    return 
-
-                now = datetime.now()
-
-                date = now.strftime("%Y-%m-%d %H:%M:%S")
-
-                records = record_str.split(",")
-
-                for i in range(len(records)):
-
-                    record = records[i].split()
-                    
-                    record[1] = int(record[1])
-
-                    record.append(date)
-
-                    records[i]=tuple(record)
-
-                break
-
-            except IndexError: # error detect
-
-                check_error(record_str,"The format of a record should be like this: breakfast -50. Try again !")
-
-            except ValueError:
-            
-                check_error(record_str,"Invalid value for money.")
-
-            except:
-
-                check_error('Unknown error')
 
 
-        # balance calculation
-        diff = 0 
-
-        for record in records:
-
-            diff+=record[1]
-
-        #update members
-        self.money += diff
-        self.records.extend(records)
-
-        print("Add completed !")
-
-        return 
     
-    def view(self)->bool:
+def input_money(self_money)->int:
+    """Input the amount of money"""
+    
+    while 1: # money input
+        
+        money_str = input("How much money do you have ?")
 
-        """Print table of records and current money"""
-     
+        try: #data process
 
-        print("Here's your expense and income records:")
-       
-        if self.records:
+            if money_str == "cancel" : # cancel function
+                print("Canceled option, set to 0 by default")
+                return 0
 
-            Headers = ("Index","Description","Amount","Time")
+            self_money = int(money_str) 
+            break 
 
-            max_len=[len(i) for i in Headers] #IN_SPACES,DES_SPACES,DIFF_SPACES,TIME_SPACES
+        except ValueError: # error detect
 
-            #Print Headers
-            for i in range(len(self.records)):
+            check_error(money_str,"Invalid value for money. Try again!")
+        
+        except : check_error("Unknown error")
+        
+    return self_money
 
-                record = self.records[i]
+def add_record(self_money,self_records)->Tuple[int,list]:
+    """Add income or expense record"""
+    
+    while 1:  #record input
+        
+        record_str  = input("Add an expense or income record with description and amount:\n")
+        
+        try:  #data process
+            if record_str == "cancel" : # cancel function
 
-                index, description, diff ,time = i+1 , record[0] , record[1], record[2]
+                print("Canceled option")
 
-                tmp = (index, description, diff, time)
+                return self_money,self_records
 
-                for i in range(len(tmp)):
-                    if len(str(tmp[i])) > max_len[i]:
-                        max_len[i] = len(str(tmp[i]))
-            
+            now = datetime.now()
 
-            for i in range(len(Headers)):
-                print(f'{Headers[i]:^{(max_len[i]+3)}}',end='')
-            
-            print()
+            date = now.strftime("%Y-%m-%d %H:%M:%S")
+
+            records = record_str.split(",")
+
+            for i in range(len(records)):
+
+                record = records[i].split()
+                
+                record[1] = int(record[1])
+
+                record.append(date)
+
+                records[i]=tuple(record)
+
+            break
+
+        except IndexError: # error detect
+
+            check_error(record_str,"The format of a record should be like this: breakfast -50. Try again !")
+
+        except ValueError:
+        
+            check_error(record_str,"Invalid value for money.")
+
+        except:
+
+            check_error('Unknown error')
+
+
+    # balance calculation
+    diff = 0 
+
+    for record in records:
+
+        diff+=record[1]
+
+    #update members
+    self_money += diff
+    self_records.extend(records)
+
+    print("Add completed !")
+
+    return self_money,self_records
+
+def view(self_money,self_records)->bool:
+
+    """Print table of records and current money"""
+    
+
+    print("Here's your expense and income records:")
+    
+    if self_records:
+
+        Headers = ("Index","Description","Amount","Time")
+
+        max_len=[len(i) for i in Headers] #IN_SPACES,DES_SPACES,DIFF_SPACES,TIME_SPACES
+
+        #Print Headers
+        for i in range(len(self_records)):
+
+            record = self_records[i]
+
+            index, description, diff ,time = i+1 , record[0] , record[1], record[2]
+
+            tmp = (index, description, diff, time)
 
             for i in range(len(tmp)):
-                print("="*(max_len[i]+3),end='')
-            print()
-            
-            #Print records
-            for i in range(len(self.records)):
+                if len(str(tmp[i])) > max_len[i]:
+                    max_len[i] = len(str(tmp[i]))
+        
 
-                record = self.records[i]
+        for i in range(len(Headers)):
+            print(f'{Headers[i]:^{(max_len[i]+3)}}',end='')
+        
+        print()
 
-                index, description, diff ,time = i+1 , record[0] , record[1], record[2]
+        for i in range(len(tmp)):
+            print("="*(max_len[i]+3),end='')
+        print()
+        
+        #Print records
+        for i in range(len(self_records)):
 
-                tmp = (index, description, diff, time)
+            record = self_records[i]
 
-                for i in range(len(tmp)):
-                    print(f'{tmp[i]:<{(max_len[i]+3)}}',end='')
-                print()
+            index, description, diff ,time = i+1 , record[0] , record[1], record[2]
+
+            tmp = (index, description, diff, time)
 
             for i in range(len(tmp)):
-                print("="*(max_len[i]+3),end='')
+                print(f'{tmp[i]:<{(max_len[i]+3)}}',end='')
             print()
 
-        else:
+        for i in range(len(tmp)):
+            print("="*(max_len[i]+3),end='')
+        print()
 
-            print ("*--No records !--*")
+    else:
 
-            
-        #Print current money 
-        print(f"Now you have {self.money} dollars.")
-       
+        print ("*--No records !--*")
 
-        return bool(self.records)
-
-    def delete_record(self)->None: #future thoughts : make delete fomr a-b or delete a time
-        """Delete income or expense record"""
-
-        if not self.view():
-
-            print("Nothing to delete !")
-
-            return 
         
-        while 1: # delete input
-            
-            delete_str = input("Which record do you want to delete ? (Enter index number)")
-
-            try: #data process
-
-                if delete_str == "cancel" :# cancel function
-
-                    print("Canceled option")
-
-                    return 
-
-                delete_num = int(delete_str)
-
-                if delete_num-1 < 0 : RECORD_TYPE_FORMAT[len(RECORD_TYPE_FORMAT)] # prevent list by changing negative 
-
-                delete_diff = int(self.records[delete_num-1][1])
-
-                del self.records[delete_num-1]
-
-                self.money-=delete_diff #update member
-
-                print('Delete completed !, deleted index "%d"' % delete_num)
-
-                break 
-
-            except ValueError: # error detect
-
-                check_error(delete_str,"Invalid format. Fail to delete a record. Try again")
-            
-            except IndexError:
-
-                check_error(delete_str,"Please enter valid index ! Try again")
-            
-            except: check_error("Unknown error")
-            
-
-        return 
+    #Print current money 
+    print(f"Now you have {self_money} dollars.")
     
-    def save(self)->bool:
 
-        """save values"""
+    return bool(self_records)
 
-        try:
-            with open('records.txt',"w") as w:
-                w.write(str(self.money)+'\n')
-                for record in self.records:
-                    record=list(record)
-                    record=list(map(str,record))
-                    to_save = ('|'.join(record))+'\n'
-                    w.writelines(to_save)
-                w.close()
+def delete_record(self_money,self_records)->Tuple[int,list]: #future thoughts : make delete fomr a-b or delete a time
+    """Delete income or expense record"""
 
-        except : 
+    if not view(self_money,self_records):
+
+        print("Nothing to delete !")
+
+        return self_money,self_records
+    
+    while 1: # delete input
+        
+        delete_str = input("Which record do you want to delete ? (Enter index number)")
+
+        try: #data process
+
+            if delete_str == "cancel" :# cancel function
+
+                print("Canceled option")
+
+                return self_money,self_records
+
+            delete_num = int(delete_str)
+
+            if delete_num-1 < 0 : RECORD_TYPE_FORMAT[len(RECORD_TYPE_FORMAT)] # prevent list by changing negative 
+
+            delete_diff = int(self_records[delete_num-1][1])
+
+            del self_records[delete_num-1]
+
+            self_money-=delete_diff #update member
+
+            print('Delete completed !, deleted index "%d"' % delete_num)
+
+            break 
+
+        except ValueError: # error detect
+
+            check_error(delete_str,"Invalid format. Fail to delete a record. Try again")
+        
+        except IndexError:
+
+            check_error(delete_str,"Please enter valid index ! Try again")
+        
+        except: check_error("Unknown error")
+        
+
+    return self_money,self_records
+
+def save(self_money,self_records)->None:
+
+    """save values"""
+
+    try:
+        with open('records.txt',"w") as w:
+            w.write(str(self_money)+'\n')
+            for record in self_records:
+                record=list(record)
+                record=list(map(str,record))
+                to_save = ('|'.join(record))+'\n'
+                w.writelines(to_save)
+            w.close()
+
+    except : 
             check_error("Unknown error")
 
             while (1):
                 inp=input("Data unsaved, continue exit program ? (Y/N) ")
 
                 if inp == 'Y':
-                    
+
                     sys.stderr.write("Data lost\n")
 
                     return True
@@ -262,108 +258,109 @@ class pymoney:
                 else:
                     sys.stderr.write("Invalid option, try again\n")
 
-        print("Data saved !")
+    print("Data saved !")
         
-        return True
+    return True
+
+def load()->bool:
     
-    def load(self)->bool:
-
-        def read_record(record_str:str)->tuple:
-            """process read data of a single record """
-            record = record_str.split('|')
-            for i,info in enumerate(record):
-                record[i] = type(RECORD_TYPE_FORMAT[i])(info)
-            
-            #check if amount of element in a line fits the reading format, if not then return value error
-            if len(record)!=len(RECORD_TYPE_FORMAT):int('invalid amount of record') 
-            
-
-            return tuple(record)
+    def read_record(record_str:str)->tuple:
+        """process read data of a single record """
+        record = record_str.split('|')
+        for i,info in enumerate(record):
+            record[i] = type(RECORD_TYPE_FORMAT[i])(info)
         
+        #check if amount of element in a line fits the reading format, if not then return value error
+        if len(record)!=len(RECORD_TYPE_FORMAT):int('invalid amount of record') 
+        
+
+        return tuple(record)
+    
+    self_money,self_records = 0,[]
+
+    try:
+
+        with open('records.txt',"r") as r:
+            lines = r.readlines()
+            lines= list(map(lambda x:x.strip(),lines))
+            self_money = int(lines.pop(0))
+            
+            
+
+            for record_str in lines:
+
+                self_records.append(read_record(record_str))
+                
+            r.close()
+
+
+    except FileNotFoundError:
+        
+        print('No previous record detected')
+
+        return False,self_money,self_records
+    
+    except ValueError:
+
+        print('Content invalid, deleting all contents')
+
         try:
+            os.remove('records.txt')
+        except:
+            print('Error occured on deleting process.')
 
-            with open('records.txt',"r") as r:
-                lines = r.readlines()
-                lines= list(map(lambda x:x.strip(),lines))
-                self.money = int(lines.pop(0))
-                
-                
-
-                for record_str in lines:
- 
-                    self.records.append(read_record(record_str))
-                   
-                    
-
-
-                r.close()
-
-
-        except FileNotFoundError:
+        return False,self_money,self_records
             
-            print('No previous record detected')
+    except : 
+        check_error('Unknown error')
 
-            return False
-        
-        except ValueError:
+        return False,self_money,self_records
+    
+    
+    print("Previous data loaded ! ")
+    
 
-            print('Content invalid, deleting all contents')
+    return True,self_money,self_records
 
-            try:
-                os.remove('records.txt')
-            except:
-                print('Error occured on deleting process.')
+def initialize()->Tuple[int,list]:
 
-            return False
-                
-        except : 
-            check_error('Unknown error')
+    print("Program starts")
 
-            return False
-        
-        
-        print("Previous data loaded ! ")
-       
+    loaded,self_money,self_records=load()
 
-        return True
+    if not loaded:
 
-    def run(self)->None:
+        self_money=input_money(self_money)
+    else:
+        print("Welcome back!")
 
-        print("Program starts")
-        
-        if not self.load():
+    return self_money,self_records
 
-            self.input_money()
-        else:
-            print("Welcome back!")
-        
-        while(1):
 
-            cmd = input("What do you want to do (add / view / delete / exit)?")
 
-            if cmd == "exit": 
-                if self.save() : break
-                
-            elif cmd == "add":
-                self.add_record()
+self_money,self_records=initialize()
 
-            elif cmd=="view":
-                self.view()
-            
-            elif cmd == "delete":
-                self.delete_record()
-            else:
-                sys.stderr.write("Invalid command ! Try again.\n")
+while(1):
 
-        
-       
-        print("Program terminated") 
+    cmd = input("What do you want to do (add / view / delete / exit)?")
 
-        return
+    if cmd == "exit": 
+        if save(self_money,self_records) : break
 
-if __name__ == '__main__' :
-    mymoney=pymoney()
-    mymoney.run()
+    elif cmd == "add":
+        self_money,self_records=add_record(self_money,self_records)
+
+    elif cmd=="view":
+        view(self_money,self_records)
+    
+    elif cmd == "delete":
+        self_money,self_records=delete_record(self_money,self_records)
+    else:
+        sys.stderr.write("Invalid command ! Try again.\n")
+
+print("Program terminated") 
+
+
 
         
 
