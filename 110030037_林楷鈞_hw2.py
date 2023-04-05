@@ -50,7 +50,7 @@ def input_money(self_money)->int:
         
     return self_money
 
-def add_record(self_money,self_records)->Tuple[int,list]:
+def add(self_money,self_records)->Tuple[int,list]:
     """Add income or expense record"""
     
     while 1:  #record input
@@ -174,7 +174,7 @@ def view(self_money,self_records)->bool:
 
     return bool(self_records)
 
-def delete_record(self_money,self_records)->Tuple[int,list]: #future thoughts : make delete fomr a-b or delete a time
+def delete(self_money,self_records)->Tuple[int,list]: #future thoughts : make delete fomr a-b or delete a time
     """Delete income or expense record"""
 
     if not view(self_money,self_records):
@@ -348,13 +348,13 @@ while(1):
         if save(self_money,self_records) : break
 
     elif cmd == "add":
-        self_money,self_records=add_record(self_money,self_records)
+        self_money,self_records=add(self_money,self_records)
 
     elif cmd=="view":
         view(self_money,self_records)
     
     elif cmd == "delete":
-        self_money,self_records=delete_record(self_money,self_records)
+        self_money,self_records=delete(self_money,self_records)
     else:
         sys.stderr.write("Invalid command ! Try again.\n")
 
