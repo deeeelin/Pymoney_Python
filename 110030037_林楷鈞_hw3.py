@@ -50,12 +50,14 @@ def input_money(self_money)->int:
         
     return self_money
 
-def add(self_money,self_records)->Tuple[int,list]:
+def add(self_money,self_records)->Tuple[int,List[Tuple[str,int]]]:
     """Add income or expense record"""
     
     while 1:  #record input
         
-        record_str  = input("Add an expense or income record with description and amount:\n")
+        record_str  = input("""Add some expense or income records with description and amount:
+desc1 amt1, desc2 amt2, desc3 amt3, ...
+""")
         
         try:  #data process
             if record_str == "cancel" : # cancel function
@@ -174,7 +176,7 @@ def view(self_money,self_records)->bool:
 
     return bool(self_records)
 
-def delete(self_money,self_records)->Tuple[int,list]: #future thoughts : make delete fomr a-b or delete a time
+def delete(self_money,self_records)->Tuple[int,List[Tuple[str,int]]]: #future thoughts : make delete fomr a-b or delete a time
     """Delete income or expense record"""
 
     if not view(self_money,self_records):
@@ -222,7 +224,7 @@ def delete(self_money,self_records)->Tuple[int,list]: #future thoughts : make de
 
     return self_money,self_records
 
-def save(self_money,self_records)->None:
+def save(self_money,self_records)->bool:
 
     """save values"""
 
@@ -262,7 +264,7 @@ def save(self_money,self_records)->None:
         
     return True
 
-def load()->bool:
+def load()->Tuple[bool,int,Tuple[str,int,str]]:
     
     def read_record(record_str:str)->tuple:
         """process read data of a single record """
@@ -312,7 +314,7 @@ def load()->bool:
                         print('Previous data deleted')
                         
                     except:
-                        print('Error occured on deleting process.')
+                        sys.stderr.write('Error occured on deleting process.\n')
 
                     return False,self_money,self_records
                  
