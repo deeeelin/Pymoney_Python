@@ -641,6 +641,7 @@ class Categories:
         return 
     
     def _prune(self,name,cats=[]):
+        """remove categories"""
 
         if cats == []: cats = self._categories
 
@@ -676,8 +677,10 @@ class Categories:
         
 
     def find_subcategories(self,cat):
+        """find subcategroies and the category return in a list"""
 
         def find_subcategories_gen(category, categories, found=False):
+            """a generator of the function"""
 
             if type(categories) == list:
 

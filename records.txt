@@ -1,4 +1,10 @@
-100
-snack|rr|-1000|2023-05-03 00:29:14
-meal|gg|-40|2023-05-03 00:53:47
-['expense', ['food', ['drink', 'meal'], 'transportation', ['railway']], 'income', ['salary', 'bonus']]
+1000
+meal|breakfast|-50|2023-05-03 00:57:53
+drink|coffee|-100|2023-05-03 00:58:53
+meal|breakfast|-50|2023-05-03 00:59:49
+drink|coffee|-100|2023-05-03 01:00:13
+food|bread|-80|2023-05-03 01:00:19
+transportation|taxi|-170|2023-05-03 01:00:24
+railway|MRT|-45|2023-05-03 01:00:29
+salary|part-time|1200|2023-05-03 01:00:35
+['expense', ['food', ['meal', 'snack', 'drink'], 'transportation', ['bus', 'railway']], 'income', ['salary', 'bonus']]
