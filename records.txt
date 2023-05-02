@@ -1,0 +1,2 @@
+100
+['expense', ['food', ['snack', 'drink'], 'transportation', ['bus', 'railway']], 'income', ['salary', 'bonus']]
