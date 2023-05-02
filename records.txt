@@ -1,3 +1,4 @@
 100
 snack|rr|-1000|2023-05-03 00:29:14
-['expense', ['food', ['snack', 'drink'], 'transportation', ['bus', 'railway']], 'income', ['salary', 'bonus']]
+meal|gg|-40|2023-05-03 00:53:47
+['expense', ['food', ['drink', 'meal'], 'transportation', ['railway']], 'income', ['salary', 'bonus']]

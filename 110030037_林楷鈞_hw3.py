@@ -25,7 +25,7 @@ def check_error(string:str = '',error_message:str= '')->None: #check exceptions
 
     return 
 
-class Record:#
+class Record:
     """Represent a record."""
     def __init__(self,cat:str,des:str,val:int,time:str):
        
@@ -52,9 +52,10 @@ class Record:#
         
 
    
-class Records:#
+class Records:
     """Maintain a list of all the 'Record's and the initial amount of money."""
-    def __init__(self):#
+
+    def __init__(self):
         """Constructor of Records"""
     
         def input_money()->int:
@@ -198,7 +199,7 @@ class Records:#
 
                 date = now.strftime("%Y-%m-%d %H:%M:%S")
 
-                records = record_str.split(",")
+                records= list(map(lambda x:x.strip(),record_str.split(",")))
 
                 for i,v in enumerate(records):
 
@@ -215,7 +216,7 @@ class Records:#
                         self._lis.append(r)
                     else:
 
-                        sys.stderr.write("No category :",r.category,". Add record failed.\n")
+                        sys.stderr.write(f"No category :{r.category}. Add record failed.\n")
 
                         return
 
@@ -230,6 +231,7 @@ class Records:#
                 check_error(record_str,"Invalid value for money. Try again !")
 
             except Exception as e:
+                print(e)
                 check_error('Unknown error')
 
 
@@ -417,6 +419,7 @@ class Records:#
     
 class Categories:
     """Maintain the category list and provide some methods."""
+
     def __init__(self):
         self._categories = []
        
