@@ -304,7 +304,7 @@ class Records:#
 
         else:
 
-            print(f"Now you have { self._init_money + sum([r.amount for r in self.lis])} dollars.")
+            print(f"Now you have { self._init_money + sum([r.amount for r in self._lis])} dollars.")
         
 
         return bool(view_lis)
@@ -672,45 +672,28 @@ class Categories:
         else: return cat == cats
         
 
-    def find_subcategories(self,cat,cats=[]):
-        """return a flatten list of the category at first index , and it's subcategories """
+    def find_subcategories(self,cat):
 
-        if cats == [] : cats = self._categories
+        def find_subcategories_gen(category, categories, found=False):
 
-        if type(cats) == list :
+            if type(categories) == list:
 
-            for v in cats:
-    
-                p = self.find_subcategories(cat, v)
+                for index, child in enumerate(categories):
 
-                if p == True:
+                    yield from find_subcategories_gen(category,child,found)
+
+                    if child == category and index + 1 < len(categories) and type(categories[index + 1]) == list:
+                        
+                        yield from find_subcategories_gen(category,categories[index + 1],found=True)
+            else:
+                
+                if categories == category or found:
+
+                    yield categories
         
-                    index = cats.index(v)
-                    
-                    if index + 1 < len(cats) and type(cats[index + 1]) == list:
-
-                        return self._flatten(cats[index:index + 2])
-                    else:
-                        # return only itself if no subcategories
-                        return [v]
-                    
-                if p != []:
-                    return p
-        return True if cats == cat else []
-    
-    def _flatten(self,cats)->list:
-        """flatten the nested category list"""
-
-        total =[]
-
-        for c in cats:
-
-            if type(c) != list : total.append(c)
-
-            else :  total.extend(self._flatten(c))
-
-        return total
-    
+       
+        
+        return list(find_subcategories_gen(cat,self._categories))
     
     def save(self):
         """save categories"""
