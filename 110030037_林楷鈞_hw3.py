@@ -177,8 +177,10 @@ class Records:
         if not load(): # 1. Read from 'records.txt' or prompt for initial amount of money.
 
             input_money()
+
         else:
-            print("Welcome back!")
+            
+            print("Welcome back !")
 
         return
     
@@ -462,6 +464,14 @@ class Categories:
                 self._categories = ast.literal_eval(category_list)
             
                 if not check_category(self._categories) : raise ValueError
+
+
+
+            except FileNotFoundError:
+                
+                print('No previous record detected')
+
+                return False
                     
 
             
@@ -741,6 +751,8 @@ class Categories:
     
     
     
+
+
 
 
 categories = Categories()
