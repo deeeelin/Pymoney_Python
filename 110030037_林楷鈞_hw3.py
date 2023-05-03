@@ -390,7 +390,7 @@ class Records:
 
                     to_save = ('|'.join(record))+'\n'
 
-                    w.writelines(to_save)
+                    w.write(to_save)
 
         except : 
                 check_error("Unknown error")
@@ -407,7 +407,7 @@ class Records:
                     
                     elif inp == 'N':
 
-                        sys.stderr.write("Exit canceled, please fix error contents in 'records.txt'.\n")
+                        sys.stderr.write("Exit canceled\n")
         
                         return False
                     
@@ -427,7 +427,8 @@ class Categories:
        
         def check_category(category):
             """check if category list is valid"""
-            if type(category) != list or category==[] :return False
+            if type(category) != list :return False
+            if category == [] : return True 
 
             prev = category[0]
 
@@ -588,7 +589,7 @@ class Categories:
         return 
     
     def delete(self):
-        """Delete income or expense record"""
+        """Delete categories"""
        
         if not self.view():
 
@@ -735,7 +736,7 @@ class Categories:
                     
                     elif inp == 'N':
 
-                        sys.stderr.write("Exit canceled, please fix error contents in 'records.txt'.\n")
+                        sys.stderr.write("Exit canceled\n")
         
                         return False
                     
